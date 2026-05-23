@@ -1,0 +1,46 @@
+[package]
+name = "cold-tools"
+version = "0.1.0"
+edition = "2024"
+description = "LAMCLOD tool protocol framework and built-in toolset"
+license = "MIT"
+rust-version = "1.85"
+readme = "README.md"
+repository = "https://github.com/LamClod/cold-tools"
+keywords = ["llm", "tools", "agent", "mcp", "function-calling"]
+categories = ["development-tools", "asynchronous"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["fs", "process", "time", "sync", "rt", "rt-multi-thread", "io-util"] }
+regex = "1"
+walkdir = "2"
+glob = "0.3"
+base64 = "0.22"
+tracing = { version = "0.1", optional = true }
+
+[features]
+default = []
+tracing = ["dep:tracing"]
+
+# Tier 3-10 feature stubs (tools planned, see DESIGN.md)
+web = []          # Tier 3: web_search, web_extract, x_search
+browser = []      # Tier 4: 12 browser automation tools (CDP)
+sandbox = []      # Tier 5: execute_code, computer_use
+media = []        # Tier 6: image/video/tts/vision tools
+kanban = []       # Tier 7: 9 kanban board tools
+comms = []        # Tier 8: send_message, discord, feishu
+iot = []          # Tier 9: Home Assistant tools
+extra = []        # Tier 10: cronjob, mixture_of_agents, etc.
+mcp = []          # MCP protocol bridge
+full = ["web", "browser", "sandbox", "media", "kanban", "comms", "iot", "extra", "mcp"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = 3
